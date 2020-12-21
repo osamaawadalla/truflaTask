@@ -1,0 +1,78 @@
+<div class="home">
+  <!-- Start Section -->
+  <div class="section">
+    <div class="container">
+      <div class="row">
+
+        <!-- Start Text Area -->
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="jsonTextArea">Enter JSON Object</label>
+            <textarea rows="15" [(ngModel)]="textObject" class="form-control" id="jsonTextArea"
+              (keyup)="getJsonInputs(textObject)"></textarea>
+            <p class="err mt-3" *ngIf="errMsg">Invalid JSON Object</p>
+          </div>
+        </div>
+        <!-- End Text Area -->
+
+        <!-- Start Form -->
+        <div class="col-md-6">
+          <div class="form_data" *ngIf="jsonInputs?.length != 0">
+            <form #formData="ngForm" (ngSubmit)="getData(formData.value)">
+              <ng-container *ngFor="let jsonInput of jsonInputs">
+                <div class="form-group"
+                  *ngIf="jsonInput.type == 'text' || jsonInput.type == 'email' || jsonInput.type == 'password'">
+                  <label for="input{{jsonInput.id}}">{{jsonInput.label}}</label>
+                  <input type="{{jsonInput.type}}" class="form-control" id="input{{jsonInput.id}}"
+                    name="{{jsonInput.name}}" ngModel>
+                </div>
+
+                <div class="form-group" *ngIf="jsonInput.type == 'select'">
+                  <label for="input{{jsonInput.id}}">{{jsonInput.label}}</label>
+                  <select class="form-control" id="input{{jsonInput.id}}" name="{{jsonInput.name}}" ngModel>
+                    <option *ngFor="let option of jsonInput.options" value="{{option.value}}">{{option.name}}</option>
+                  </select>
+                </div>
+
+                <div class="form-group" *ngIf="jsonInput.type == 'radio'">
+                  <label>{{jsonInput.label}}</label>
+                  <div class="custom-control custom-radio" *ngFor="let option of jsonInput.options">
+                    <input type="radio" class="custom-control-input" id="radio-input{{jsonInput.id}}{{option.value}}"
+                      name="{{jsonInput.name}}" value="{{option.value}}" ngModel>
+                    <label class="custom-control-label"
+                      for="radio-input{{jsonInput.id}}{{option.value}}">{{option.name}}</label>
+                  </div>
+                </div>
+
+                <div class="form-group" *ngIf="jsonInput.type == 'check'">
+                  <label>{{jsonInput.label}}</label>
+                  <div class="custom-control custom-checkbox" *ngFor="let option of jsonInput.options">
+                    <input type="checkbox" class="custom-control-input" id="check-input{{jsonInput.id}}{{option.value}}"
+                      name="{{option.value}}" value="{{option.value}}" ngModel>
+                    <label class="custom-control-label"
+                      for="check-input{{jsonInput.id}}{{option.value}}">{{option.name}}</label>
+                  </div>
+                </div>
+
+              </ng-container>
+
+              <div class="buttons mt-4">
+                <div class="row">
+                  <div class="col-6">
+                    <button class="btn btn-primary">Submit</button>
+                  </div>
+                  <div class="col-6 text-right">
+                    <span class="btn btn-danger" (click)="cancel()">Cancel</span>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- End Form -->
+
+      </div>
+    </div>
+  </div>
+  <!-- End Section -->
+</div>
